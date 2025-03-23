@@ -1,0 +1,53 @@
+include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+typedef struct Node {
+    char* data;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    Node* top;
+} Stack;
+
+void push(Stack* s, char* item) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Alokasi memori gagal!\n");
+        return;
+    }
+    newNode->data = strdup(item);  // Simpan salinan item
+    newNode->next = s->top;
+    s->top = newNode;
+}
+
+char* pop(Stack* s) {
+    if (s->top == NULL) {
+        printf("Stack kosong! Tidak bisa pop.\n");
+        return NULL;
+    }
+    Node* temp = s->top;
+    char* popped = strdup(temp->data);  // Salin data sebelum free
+    s->top = temp->next;
+    free(temp->data);  // Bebaskan string di dalam node
+    free(temp);
+    return popped;
+}
+
+char* peek(Stack* s) {
+    if (s->top == NULL) {
+        printf("Stack kosong! Tidak bisa di peek.\n");
+        return NULL;
+    }
+    return s->top->data;
+}
+int isOperator(char ch);
+int precedence(char op);
+void infixToPostfix(char* infix, char* postfix);
+void postfixToInfix(char* postfix, char* infix);
+void infixToPrefix(char* infix, char* prefix);
+void prefixToInfix(char* prefix, char* infix);
+void postfixToPrefix(char* postfix, char* prefix);
+void prefixToPostfix(char* prefix, char* postfix);
