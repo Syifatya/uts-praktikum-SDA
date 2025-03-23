@@ -83,3 +83,22 @@ int main() {
             printf("====================================\n");
             break;
         }
+
+switch (choice) {
+            case 1:
+
+            case 2:
+   
+            case 3:
+
+            case 4:
+
+            case 5:
+
+            case 6:
+
+            default:
+                printf("\n==========================================\n");
+                printf("| Pilihan tidak valid, silakan coba lagi |\n");
+                printf("==========================================\n");
+        } 
