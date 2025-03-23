@@ -51,3 +51,35 @@ void infixToPrefix(char* infix, char* prefix);
 void prefixToInfix(char* prefix, char* infix);
 void postfixToPrefix(char* postfix, char* prefix);
 void prefixToPostfix(char* prefix, char* postfix);
+
+int main() {
+    char infix[100], postfix[100], prefix[100];
+    int choice;
+    char lanjut;
+
+    printf("=================================================\n");
+    printf("= SELAMAT DATANG DI KALKULATOR NOTASI EKSPRESI! =\n");
+    printf("=================================================\n");
+
+    do {
+        printf("\n============================\n");
+        printf("=   PILIH MENU KALKULATOR!  =\n");
+        printf("============================\n");
+        printf("=   1. Infix ke Postfix     =\n");
+        printf("=   2. Postfix ke Infix     =\n");
+        printf("=   3. Infix ke Prefix      =\n");
+        printf("=   4. Prefix ke Infix      =\n");
+        printf("=   5. Postfix ke Prefix    =\n");
+        printf("=   6. Prefix ke Postfix    =\n");
+        printf("=   7. Keluar               =\n");
+        printf("============================\n");
+        printf("Pilihan Anda: ");
+        scanf("%d", &choice);
+        getchar(); // Menghapus newline dari buffer setelah scanf
+
+        if (choice == 7) {
+            printf("\n====================================\n");
+            printf("=    Anda keluar dari kalkulator   =\n");
+            printf("====================================\n");
+            break;
+        }
