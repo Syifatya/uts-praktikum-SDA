@@ -253,4 +253,52 @@ void prefixToInfix(char* prefix, char* infix) {
     }
     strcpy(infix, result);
     free(result);
+} 
+
+void postfixToPrefix(char* postfix, char* prefix) {
+    Stack s;
+    s.top = NULL;
+    int i = 0;
+    char ch;
+    char operand1[100], operand2[100];
+
+    while ((ch = postfix[i++]) != '\0') {
+        if (isalnum(ch)) { // Ubah isdigit -> isalnum
+            char token[2] = {ch, '\0'};
+            push(&s, token);
+        } else if (isOperator(ch)) {
+            strcpy(operand2, pop(&s));
+            strcpy(operand1, pop(&s));
+            char* expr = (char*)malloc(strlen(operand1) + strlen(operand2) + 2);
+            sprintf(expr, "%c%s%s", ch, operand1, operand2);
+            push(&s, expr);
+        }
+    }
+
+    strcpy(prefix, pop(&s));
+}
+
+void prefixToPostfix(char* prefix, char* postfix) {
+    Stack s;
+    s.top = NULL;
+    int i;
+    char ch;
+    char operand1[100], operand2[100];
+    int len = strlen(prefix);
+
+    for (i = len - 1; i >= 0; i--) {
+        ch = prefix[i];
+        if (isalnum(ch)) { // Ubah isdigit -> isalnum
+            char token[2] = {ch, '\0'};
+            push(&s, token);
+        } else if (isOperator(ch)) {
+            strcpy(operand1, pop(&s));
+            strcpy(operand2, pop(&s));
+            char* expr = (char*)malloc(strlen(operand1) + strlen(operand2) + 2);
+            sprintf(expr, "%s%s%c", operand1, operand2, ch);
+            push(&s, expr);
+        }
+    }
+
+    strcpy(postfix, pop(&s));
 }
