@@ -86,22 +86,73 @@ int main() {
 
 switch (choice) {
             case 1:
-
+                printf("\nMasukkan ekspresi Infix: ");
+                fgets(infix, sizeof(infix), stdin);
+                infix[strcspn(infix, "\n")] = '\0'; // Hapus newline
+                infixToPostfix(infix, postfix);
+                printf("Postfixnya adalah: %s\n", postfix);
+                break;
             case 2:
-   
+                printf("\nMasukkan ekspresi Postfix: ");
+                fgets(postfix, sizeof(postfix), stdin);
+                postfix[strcspn(postfix, "\n")] = '\0'; 
+                postfixToInfix(postfix, infix);
+                printf("Infixnya adalah: %s\n", infix);
+                break;
             case 3:
-
+                printf("\nMasukkan ekspresi Infix: ");
+                fgets(infix, sizeof(infix), stdin);
+                infix[strcspn(infix, "\n")] = '\0'; 
+                infixToPrefix(infix, prefix);
+                printf("Prefixnya adalah: %s\n", prefix);
+                break;
             case 4:
-
+                printf("\nMasukkan ekspresi Prefix: ");
+                fgets(prefix, sizeof(prefix), stdin);
+                prefix[strcspn(prefix, "\n")] = '\0'; 
+                prefixToInfix(prefix, infix);
+                printf("Infixnya adalah: %s\n", infix);
+                break;
             case 5:
-
+                printf("\nMasukkan ekspresi Postfix: ");
+                fgets(postfix, sizeof(postfix), stdin);
+                postfix[strcspn(postfix, "\n")] = '\0'; 
+                postfixToPrefix(postfix, prefix);
+                printf("Prefixnya adalah: %s\n", prefix);
+                break;
             case 6:
-
+                printf("\nMasukkan ekspresi Prefix: ");
+                fgets(prefix, sizeof(prefix), stdin);
+                prefix[strcspn(prefix, "\n")] = '\0'; // Hapus newline
+                prefixToPostfix(prefix, postfix);
+                printf("Postfixnya adalah: %s\n", postfix);
+                break;
             default:
                 printf("\n==========================================\n");
                 printf("| Pilihan tidak valid, silakan coba lagi |\n");
                 printf("==========================================\n");
-        } 
+        }
+
+// Loop untuk menerima putusan lanjutan dari penerima
+        do {
+            printf("\nApakah anda ingin mengkonversikan ekspresi lain? (y/n): ");
+            scanf(" %c", &lanjut);
+            getchar(); // Hapus newline setelah input karakter
+
+            if (lanjut != 'y' && lanjut != 'Y' && lanjut != 'n' && lanjut != 'N') {
+                printf("Input tidak valid! Harap masukkan 'y' untuk lanjut atau 'n' untuk keluar.\n");
+            }
+
+        } while (lanjut != 'y' && lanjut != 'Y' && lanjut != 'n' && lanjut != 'N');
+
+    } while (lanjut == 'y' || lanjut == 'Y');
+
+    printf("\n==============================================================\n");
+    printf("| Terima kasih telah menggunakan kalkulator notasi ekspresi! |\n");
+    printf("==============================================================\n");
+
+    return 0;
+}
 
 int isOperator(char ch) {
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^');
