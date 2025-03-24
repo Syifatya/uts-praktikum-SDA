@@ -102,3 +102,87 @@ switch (choice) {
                 printf("| Pilihan tidak valid, silakan coba lagi |\n");
                 printf("==========================================\n");
         } 
+
+int isOperator(char ch) {
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^');
+}
+
+int precedence(char op) {
+    switch (op) {
+        case '+': case '-': return 1;
+        case '*': case '/': return 2;
+        case '^': return 3;
+        default: return 0;
+    }
+}
+
+void infixToPostfix(char* infix, char* postfix) {
+    Stack s;
+    s.top = NULL;
+    int i = 0, k = 0;
+    char ch;
+    char token[2];
+
+    while ((ch = infix[i++]) != '\0') {
+        if (isalnum(ch)) {
+            postfix[k++] = ch;
+        } else if (ch == '(') {
+            token[0] = ch;
+            token[1] = '\0';
+            push(&s, token);
+        } else if (ch == ')') {
+            while (s.top != NULL && peek(&s)[0] != '(') {
+                postfix[k++] = pop(&s)[0];
+            }
+            pop(&s);  // Hapus '(' dari stack
+        } else if (isOperator(ch)) {
+            while (s.top != NULL && precedence(peek(&s)[0]) >= precedence(ch)) {
+                postfix[k++] = pop(&s)[0];
+            }
+            token[0] = ch;
+            token[1] = '\0';
+            push(&s, token);
+        }
+    }
+
+    while (s.top != NULL) {
+        postfix[k++] = pop(&s)[0];
+    }
+
+    postfix[k] = '\0';
+}
+
+void postfixToInfix(char* postfix, char* infix) {
+    Stack s;
+    s.top = NULL;
+    int i = 0;
+    char ch;
+    char operand1[100], operand2[100];
+
+    while ((ch = postfix[i++]) != '\0') {
+        if (isalnum(ch)) {
+            char token[2] = {ch, '\0'};
+            push(&s, token);
+        } else if (isOperator(ch)) {
+            char* op2 = pop(&s);
+            char* op1 = pop(&s);
+            if (!op1 || !op2) { 
+                printf("Error: Ekspresi postfix tidak valid!\n");
+                return;
+            }
+
+            // Alokasi memori yang cukup untuk ekspresi baru
+            char* expr = (char*)malloc(strlen(op1) + strlen(op2) + 4);
+            sprintf(expr, "(%s%c%s)", op1, ch, op2);
+            push(&s, expr);
+        }
+    }
+
+    char* result = pop(&s);
+    if (!result) {
+        printf("Error: Ekspresi tidak valid.\n");
+        return;
+    }
+    strcpy(infix, result);
+    free(result); // Free setelah digunakan
+}
