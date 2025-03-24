@@ -219,3 +219,38 @@ void infixToPrefix(char* infix, char* prefix) {
     free(reversedPrefix);
 }
 
+void prefixToInfix(char* prefix, char* infix) {
+    Stack s;
+    s.top = NULL;
+    int i;
+    char ch;
+    char operand1[100], operand2[100];
+    int len = strlen(prefix);
+
+    for (i = len - 1; i >= 0; i--) {
+        ch = prefix[i];
+        if (isalnum(ch)) {
+            char token[2] = {ch, '\0'};
+            push(&s, token);
+        } else if (isOperator(ch)) {
+            char* op1 = pop(&s);
+            char* op2 = pop(&s);
+            if (!op1 || !op2) {
+                printf("Error: Ekspresi prefix tidak valid!\n");
+                return;
+            }
+
+            char* expr = (char*)malloc(strlen(op1) + strlen(op2) + 4);
+            sprintf(expr, "(%s%c%s)", op1, ch, op2);
+            push(&s, expr);
+        }
+    }
+
+    char* result = pop(&s);
+    if (!result) {
+        printf("Error: Ekspresi tidak valid.\n");
+        return;
+    }
+    strcpy(infix, result);
+    free(result);
+}
