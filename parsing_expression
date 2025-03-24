@@ -186,3 +186,36 @@ void postfixToInfix(char* postfix, char* infix) {
     strcpy(infix, result);
     free(result); // Free setelah digunakan
 }
+
+void infixToPrefix(char* infix, char* prefix) {
+    Stack s;
+    s.top = NULL;
+    int i, k = 0;
+    char ch;
+    int len = strlen(infix);
+    char* reversedInfix = (char*)malloc(len + 1);
+    char* reversedPrefix = (char*)malloc(len + 1);
+
+    // Balik string infix
+    for (i = 0; i < len; i++) {
+        ch = infix[len - i - 1];
+        if (ch == '(') reversedInfix[i] = ')';
+        else if (ch == ')') reversedInfix[i] = '(';
+        else reversedInfix[i] = ch;
+    }
+    reversedInfix[len] = '\0';
+
+    // Konversi ke postfix
+    infixToPostfix(reversedInfix, reversedPrefix);
+
+    // Balik hasil postfix untuk mendapatkan prefix
+    len = strlen(reversedPrefix);
+    for (i = 0; i < len; i++) {
+        prefix[i] = reversedPrefix[len - i - 1];
+    }
+    prefix[len] = '\0';
+
+    free(reversedInfix);
+    free(reversedPrefix);
+}
+
